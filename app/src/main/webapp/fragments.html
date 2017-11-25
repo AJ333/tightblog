@@ -22,7 +22,7 @@
 <body>
     <div th:fragment="WeblogCategoryBar" th:remove="tag">
         <ul class="rCategory">
-            <li th:class="${!(model.categoryName == null || model.permalink == null)}? 'selected'">
+            <li th:class="${(model.categoryName == null && model.permalink == null)}? 'selected'">
                 <a th:href="${url.home}" th:text="${utils.msg('generic.all')}">"all" category</a>
             </li>
             <li th:each="cat : ${model.weblog.weblogCategories}"
@@ -76,8 +76,8 @@
             </li>
             <th:block th:if="${addExternalPages}">
                 <li th:each="page : ${model.templates}" th:if="${page.role == 'CUSTOM_EXTERNAL'}" class="rNavItem">
-                    <a th:remove="${model.weblogPage && page == model.weblogPage.Id} ? tag : none" th:href='${url.page(iPage.relativePath)}'>
-                        <span th:text="${iPage.name}">xxx</span>
+                    <a th:remove="${model.weblogPage && page == model.weblogPage.Id} ? tag : none" th:href='${url.page(page.relativePath)}'>
+                        <span th:text="${page.name}">xxx</span>
                     </a>
                 </li>
             </th:block>
@@ -238,3 +238,4 @@
     </div>
 </body>
 </html>
+
