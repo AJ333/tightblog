@@ -11,12 +11,10 @@
 </head>
 <body>
 
-	<!-- HEADER -->
 	<header>
     	<span th:replace="${model.getTemplateIdByName('standard_header')}"></span>
 	</header>
 
-	<!-- BODY -->
 	<div class="container">
 		
 		<div class="row">
@@ -37,7 +35,7 @@
                     <div th:replace="fragments :: WeblogEntryComments"></div>
                     <div th:replace="fragments :: WeblogEntryCommentForm"></div>
                 </div>
-				<ul class="pager">
+				<ul class="pager" th:with="pager = ${model.getWeblogEntriesPager()}">
 	        		<li th:if="${utils.isNotEmpty(pager.prevLink)}" class="previous">
 	        		    <a th:href="${pager.prevLink}" th:utext="${'← ' + pager.prevLabel}">xxx</a>
 	        		</li>
@@ -82,7 +80,6 @@
 		</div> <!-- /.row -->
 	</div> <!-- /.container -->
 
-	<!-- FOOTER -->
 	<footer>
     	<span th:replace="${model.getTemplateIdByName('standard_footer')}">xxx</span>
 	</footer>

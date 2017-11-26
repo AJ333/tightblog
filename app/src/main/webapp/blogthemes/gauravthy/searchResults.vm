@@ -1,72 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="robots" content="noindex">
-	#includeTemplate("common_html_head")
-	<title>$model.weblog.name: Search Results for '$model.searchTerm'</title>
+	<span th:replace="${model.getTemplateIdByName('common_html_head')}"></span>
+	<title th:utext="${model.weblog.name + ': Search Results for ' + model.searchTerm}">xxx</title>
 	#if ($model.resultCount > 0)
-		<style>
-		span.searchword { background-color:yellow; }
-		</style>
+		<style>span.searchword { background-color:yellow; }</style>
 		<script>
-			//<![CDATA[
-				searchhi_config = {ignore_site : '$url.absoluteSite'};
-			//]]>
+		    searchhi_config = {ignore_site : '[(${url.absoluteSite})]'};
 		</script>
-		<script type="application/x-javascript" src="$url.themeResource('gaurav', 'js/searchhi.js')"></script>
+		<script type="application/x-javascript" th:src="${url.themeResource('gaurav', 'js/searchhi.js')}"></script>
 		<script>
-			//<![CDATA[
 			function loadSearchHighlight() {
-				searchhi.highlightWord(document.getElementById("search_results"), '$model.searchTerm');
+				searchhi.highlightWord(document.getElementById("search_results"), '[(${model.searchTerm})]');
 			}
-			//]]>
 		</script>
    	#end
 </head>
 <body onload="loadSearchHighlight()">
 
-	<!-- HEADER -->
 	<header>
-		#includeTemplate("standard_header")
+    	<span th:replace="${model.getTemplateIdByName('standard_header')}"></span>
 	</header>
 
-	<!-- BODY -->
 	<div class="container">
 	
-		<div class="row">
-			<div class="col-lg-12">
-				<h1 class="page-header">$model.weblog.name&nbsp;<small>$model.weblog.tagline</small></h1>
-			</div>
-	  </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header" th:utext="${model.weblog.name + ' '}">
+                    <small th:utext="${model.weblog.tagline}">xxx</small>
+                </h1>
+            </div>
+        </div>
 	  	
 	  <div class="row">
 	  	
 	  	<!-- BODY MAIN-->
 	   	<div id="main_content" class="col-lg-8">
 			<div class="alert alert-info">
-				<p>Search Results for '$model.searchTerm'</p>
-		        $utils.msg( "macro.weblog.searchhits", [$model.searchTerm, $model.resultCount])
+				<p th:utext="${'Search Results for ' + model.searchTerm}">xxx</p>
+		        <span th:utext="${utils.msg('macro.weblog.searchhits', model.searchTerm, model.resultCount)}">xxx</span>
         	</div>
-        	#if ($model.resultCount > 0)
-				<div id="search_results">
+        	<th:block th:if="${model.resultCount > 0}">
+				<div th:case=${true}" id="search_results">
 					 #showNextPrevSearchControl($pager)
 					 #set($pager = $model.getWeblogEntriesPager())
-					 #showWeblogEntriesPager($pager)
+					 <div th:replace="fragments :: WeblogEntriesPager"></div>
 					 <ul class="pager">
-		             	#if($utils.isNotEmpty($pager.prevLink))<li class="previous"><a href="$pager.prevLink">← $pager.prevName</a></li>
-	#end
+		             	#if($utils.isNotEmpty($pager.prevLink))<li class="previous"><a href="$pager.prevLink">← $pager.prevName</a></li>#end
 		                #if($utils.isNotEmpty($pager.nextLink))<li class="next"><a href="$pager.nextLink">$pager.nextName →</a></li>#end
 		            </ul>
 			    </div>
-			#else
-				 <br />
-				 <br />
-				 <h3>Sorry, your search returned no results</h3>
-				 <br />
-				 <br />
-			#end
+                <br th:case="${false}"><br><h3>Sorry, your search returned no results</h3><br><br>
+			</th:block>
 			</div>
 			
 			<!-- BODY - SIDEBAR -->
@@ -98,9 +85,8 @@
 		</div> <!-- /.row -->
 	</div> <!-- /.container -->
 
-	<!-- FOOTER -->
 	<footer>
-		#includeTemplate("standard_footer")
+    	<span th:replace="${model.getTemplateIdByName('standard_footer')}">xxx</span>
 	</footer>
 	
 </body>
